@@ -1,9 +1,3 @@
-/* KAIMEA Collector — offline-first field data app.
- * Readings are saved on the phone first (IndexedDB, with a localStorage fallback),
- * then sent to Google Sheets whenever there is signal. Each record has a unique ID,
- * so re-sending never creates duplicate rows.
- * Plain ES2017, no framework, no build step, so it runs on old and new Android phones alike.
- */
 (function () {
   "use strict";
 
@@ -48,7 +42,11 @@
       lOk: "baik", lWarn: "waspada", lBad: "bahaya",
       checkTitle: "Hasil cek air terakhir", checkAllOk: "Semua nilai yang diisi dalam kisaran baik.",
       checkAdvice: "Ini cek kisaran umum, bukan diagnosis penyakit. Jika ada \"bahaya\" atau udang mati bertambah, hubungi tim KAIMEA atau penyuluh Anda.",
-      lightsNote: "Lampu hijau/kuning/merah memakai kisaran umum budidaya udang."
+      lightsNote: "Lampu hijau/kuning/merah memakai kisaran umum budidaya udang.",
+      instTitle: "Pasang KAIMEA di HP", instBody: "Agar bisa dibuka dari layar utama seperti aplikasi biasa, dan tetap jalan tanpa sinyal.",
+      instBtn: "Pasang aplikasi", instLater: "Nanti", instDone: "Aplikasi terpasang di layar utama.",
+      instAndroid: "Buka menu Chrome (⋮) di kanan atas, lalu pilih \"Instal aplikasi\" atau \"Tambahkan ke layar utama\".",
+      instIOS: "Ketuk tombol Bagikan (kotak dengan panah ke atas) di Safari, lalu pilih \"Tambah ke Layar Utama\"."
     },
     en: {
       sub: "Field Collector", tabForm: "New entry", tabList: "Records", tabSet: "Settings",
@@ -82,7 +80,11 @@
       lOk: "good", lWarn: "caution", lBad: "danger",
       checkTitle: "Latest water check", checkAllOk: "All values entered are in the good range.",
       checkAdvice: "This is a general range check, not a disease diagnosis. If anything shows \"danger\" or deaths are rising, contact the KAIMEA team or your extension officer.",
-      lightsNote: "Green/yellow/red lights use general shrimp-farming ranges."
+      lightsNote: "Green/yellow/red lights use general shrimp-farming ranges.",
+      instTitle: "Install KAIMEA on your phone", instBody: "Open it from your home screen like a normal app, and it keeps working without signal.",
+      instBtn: "Install app", instLater: "Later", instDone: "App installed on your home screen.",
+      instAndroid: "Open the Chrome menu (⋮) at the top right, then choose \"Install app\" or \"Add to Home screen\".",
+      instIOS: "Tap the Share button (square with an up arrow) in Safari, then choose \"Add to Home Screen\"."
     }
   };
   var lang = LS.get("kc.lang", "id");
@@ -256,7 +258,7 @@
   }
 
   /* ---------- state ---------- */
-  var tab = "form", editingId = null, records = [], syncState = "idle", lastErr = "";
+  var tab = "form", editingId = null, records = [], syncState = "idle", lastErr = "", installEvt = null;
   // Farmer-only build. The field-team app will be a separate app later.
   var role = "farmer";
   try { localStorage.removeItem("kc.role"); localStorage.removeItem("kc.settings"); } catch (e) {}
@@ -342,7 +344,7 @@
   function renderForm() {
     var d = derive(form), h = "";
     if (editingId) h += '<div class="banner warn">' + esc(t("editing")) + "</div>";
-    if (!editingId) h += checkSummary();
+    if (!editingId) h += installCard() + checkSummary();
     h += datalists() + '<form id="frm" autocomplete="off" novalidate>';
     h += "<fieldset><legend>" + esc(t("fIdent")) + "</legend>" +
       textField("collector", t("farmerName"), true) +
@@ -364,6 +366,28 @@
     $("frm").addEventListener("input", onInput);
     $("frm").addEventListener("change", onInput);
     $("btn-gps").addEventListener("click", getGPS);
+    var ib = $("inst-go"); if (ib) ib.onclick = doInstall;
+    var il = $("inst-later"); if (il) il.onclick = function () { LS.set("kc.instLater", Date.now()); render(); };
+  }
+  /* First use: invite the farmer to install. Browsers only allow installing after a tap,
+   * so Android Chrome gets a button; other browsers (and iPhone Safari) get short instructions.
+   * "Later" hides the card for 3 days. */
+  function isInstalled() {
+    try { return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; } catch (e) { return false; }
+  }
+  function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent || ""); }
+  function installCard() {
+    if (isInstalled() || Date.now() - LS.get("kc.instLater", 0) < 3 * 864e5) return "";
+    var how = installEvt ? '<button type="button" class="primary" id="inst-go">' + esc(t("instBtn")) + "</button>" :
+      '<p class="note" style="margin:0">' + esc(t(isIOS() ? "instIOS" : "instAndroid")) + "</p>";
+    return '<div class="inst"><img src="icons/icon-192.png" alt="" width="48" height="48"><div class="inst-b"><b>' + esc(t("instTitle")) +
+      "</b><span>" + esc(t("instBody")) + '</span><div class="row" style="margin-top:10px">' + how +
+      '<button type="button" id="inst-later">' + esc(t("instLater")) + "</button></div></div></div>";
+  }
+  function doInstall() {
+    if (!installEvt) return;
+    installEvt.prompt();
+    installEvt.userChoice.then(function () { installEvt = null; render(); });
   }
   function signsBlock() {
     return "<fieldset><legend>" + esc(t("gSigns")) + '</legend><div class="chips">' + SIGNS.map(function (s) {
@@ -535,7 +559,7 @@
     toast(t("exported"));
   }
 
-  var installEvt = null, persisted = null;
+  var persisted = null;
   function renderSettings() {
     var eff = settings(), h = "";
     // Farmers never see connection details. If the app was published without them, say who to contact.
@@ -545,7 +569,7 @@
     h += "<fieldset><legend>" + esc(t("storage")) + '</legend><p class="note">' + esc(persisted ? t("persisted") : t("notPersisted")) + '</p><p class="note">' +
       esc(t("version")) + " " + esc(APP_VERSION) + " · " + esc(deviceInfo()) + "</p></fieldset>";
     $("view").innerHTML = h;
-    var si = $("s-inst"); if (si) si.onclick = function () { installEvt.prompt(); installEvt.userChoice.then(function () { installEvt = null; render(); }); };
+    var si = $("s-inst"); if (si) si.onclick = doInstall;
   }
   function post(body, ms) {
     var s = settings(), ctl = window.AbortController ? new AbortController() : null;
@@ -609,7 +633,12 @@
   window.addEventListener("offline", renderSync);
   document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") sync(); });
   setInterval(function () { sync(); }, 60000);
-  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); installEvt = e; if (tab === "set") render(); });
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); installEvt = e;
+    var typing = document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName);
+    if (!typing) render();   // show the Install button as soon as Chrome allows it
+  });
+  window.addEventListener("appinstalled", function () { installEvt = null; toast(t("instDone")); render(); });
 
   if (navigator.storage && navigator.storage.persist) {
     navigator.storage.persisted().then(function (p) { return p || navigator.storage.persist(); }).then(function (p) { persisted = p; }).catch(function () {});

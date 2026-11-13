@@ -1,7 +1,7 @@
 {
-  "name": "KAIMEA Collector",
+  "name": "KAIMEA Data Collector",
   "short_name": "KAIMEA",
-  "description": "Pengumpul data kualitas air dan sampel tambak KAIMEA — bekerja tanpa sinyal.",
+  "description": "Pengumpul data kualitas air dan sampel tambak udang.",
   "lang": "id",
   "start_url": "./index.html",
   "scope": "./",
