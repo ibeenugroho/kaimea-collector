@@ -1,6 +1,6 @@
 # KAIMEA Collector
 
-An offline-first Android app (installable web app) with two modes, one for farmers and one for the KAIMEA field team. It records pond water quality, pond and shrimp status, visible disease signs, and lab sample codes. Readings are saved on the phone first and sent to a Google Sheet whenever there is signal.
+An offline-first Android app (installable web app). It records pond water quality, pond and shrimp status, visible disease signs, and lab sample codes. Readings are saved on the phone first and sent to a Google Sheet whenever there is signal.
 
 ## What it does
 
@@ -9,7 +9,6 @@ An offline-first Android app (installable web app) with two modes, one for farme
 - **Sends automatically** when the phone comes back online, when the app is reopened, every minute while it is open, and on demand ("Kirim sekarang").
 - **Never loses a half-filled form.** The form is saved as a draft on every keystroke.
 - **Same parameters as the KAIMEA Farm Dashboard** (dawn DO, pH, TAN, salinity, alkalinity, nitrite, depth, H₂S, nitrate, soil ORP, blue-green algae share). It also adds pH and temperature in the morning and afternoon, and works out pH swing, mean temperature and temperature swing exactly as the dashboard does.
-- **Average body weight (ABW) in both modes.** Weekly ABW lets the KAIMEA growth model calibrate each pond on its own samplings (see `claude/growth_model/`).
 - **Field-team extras:** GPS, density, pond area, Secchi, Vibrio count, ten visible signs, and sample codes for water, 16S and PCR/LAMP.
 - **Range warnings** flag values that look like typing mistakes but never block saving.
 - Bilingual (Bahasa Indonesia / English), light and dark mode, large touch targets, and a CSV backup download.
