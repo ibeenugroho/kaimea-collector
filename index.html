@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f6f73">
+<meta name="description" content="KAIMEA field data collector — pond water quality and samples, works offline.">
+<title>KAIMEA Collector</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+:root{
+  --bg:#eef2f0;--panel:#f8faf9;--ink:#14211f;--muted:#56635f;--line:#cdd7d3;
+  --accent:#0f6f73;--accent-soft:#d5ebea;--on-accent:#fff;
+  --ok:#2e7d4f;--ok-bg:#dcefe3;--warn:#9a6414;--warn-bg:#f6ead2;--bad:#b4372f;--bad-bg:#f5dcd9;
+  --f:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,"Roboto Mono",Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1716;--panel:#162220;--ink:#e3ece9;--muted:#97a6a1;--line:#2a3a37;
+  --accent:#4fb8b9;--accent-soft:#183634;--on-accent:#0f1716;
+  --ok:#5cc184;--ok-bg:#16301f;--warn:#e2a94a;--warn-bg:#33291a;--bad:#ec7a70;--bad-bg:#3a1f1c;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 var(--f);-webkit-text-size-adjust:100%;padding-bottom:env(safe-area-inset-bottom,0)}
+header{position:sticky;top:0;z-index:5;background:#14211f;color:#eef2f0;padding:calc(8px + env(safe-area-inset-top,0)) 16px 0}
+.hrow{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.brand{font-weight:800;letter-spacing:.08em;font-size:18px}
+.brand small{font-weight:500;letter-spacing:.02em;opacity:.75;margin-left:6px;font-size:12px}
+.lang{display:inline-flex;border:1px solid rgba(255,255,255,.35);border-radius:4px;overflow:hidden}
+.lang button{border:0;background:transparent;color:inherit;font:700 12px var(--f);padding:6px 10px;min-height:32px}
+.lang button[aria-pressed="true"]{background:#eef2f0;color:#14211f}
+nav button[aria-selected="true"]{border-bottom-color:#4fb8b9!important}
+.sync{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:6px 0;opacity:.95;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;background:#e2a94a;display:inline-block}
+.dot.on{background:#5cc184}.dot.err{background:#ec7a70}
+nav{display:flex;gap:2px;margin-top:4px}
+nav button{flex:1;border:0;background:transparent;color:inherit;opacity:.7;font:600 14px var(--f);padding:10px 4px;border-bottom:3px solid transparent;min-height:44px}
+nav button[aria-selected="true"]{opacity:1;border-bottom-color:var(--accent)}
+main{max-width:720px;margin:0 auto;padding:14px 16px 110px}
+fieldset{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin:0 0 12px;padding:10px 12px 12px}
+legend{font:700 12px var(--f);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);padding:0 6px}
+.f{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid var(--line)}
+.f:last-child{border-bottom:0}
+.f.wide{grid-template-columns:minmax(0,1fr)}
+.f label{font-size:14px}
+.f label small{display:block;color:var(--muted);font-size:11.5px;font-family:var(--mono)}
+.f .warnmsg{grid-column:1/-1;font-size:12px;color:var(--warn);background:var(--warn-bg);border-radius:4px;padding:3px 8px}
+input,select,textarea{font:16px var(--mono);width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);min-height:44px}
+textarea{font-family:var(--f);min-height:72px;resize:vertical}
+input[type=text],input[type=datetime-local],select,textarea{font-family:var(--f)}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+input.req-miss{border-color:var(--bad);background:var(--bad-bg)}
+.derived{font:13px var(--mono);color:var(--muted);padding:6px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:6px 0}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--bg);font-size:14px;min-height:40px}
+.chip input{width:18px;height:18px;min-height:0;accent-color:var(--accent)}
+button{font:600 15px var(--f);border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:10px 14px;min-height:44px;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button.danger{color:var(--bad);border-color:var(--bad);background:transparent}
+button:disabled{opacity:.5}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.gps{font:13px var(--mono);color:var(--muted)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0))}
+.bar .in{max-width:720px;margin:0 auto;display:flex;gap:8px}
+.bar .primary{flex:1}
+.list{display:flex;flex-direction:column;gap:8px}
+.rec{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--warn);border-radius:6px;padding:10px 12px}
+.rec.synced{border-left-color:var(--ok)}
+.rec .t{display:flex;justify-content:space-between;gap:8px;font-weight:700;flex-wrap:wrap}
+.rec .m{font:12.5px var(--mono);color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+.pill{font:700 11px var(--f);text-transform:uppercase;letter-spacing:.06em;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.pill.p{background:var(--warn-bg);color:var(--warn)}.pill.s{background:var(--ok-bg);color:var(--ok)}
+.empty{text-align:center;color:var(--muted);padding:30px 10px;border:1px dashed var(--line);border-radius:6px}
+.note{font-size:13px;color:var(--muted);margin:6px 0}
+.banner{border-radius:6px;padding:10px 12px;margin:0 0 12px;font-size:14px}
+.banner.warn{background:var(--warn-bg);border-left:5px solid var(--warn)}
+.banner.bad{background:var(--bad-bg);border-left:5px solid var(--bad)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:6px;font-size:14px;z-index:20;max-width:90vw;text-align:center}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.stats div{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.stats b{display:block;font:700 20px var(--mono)}
+.stats span{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.lt{font:700 10.5px var(--f);text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:1px 7px;margin-left:4px;white-space:nowrap;vertical-align:1px}
+.lt-ok{background:var(--ok-bg);color:var(--ok)}.lt-warn{background:var(--warn-bg);color:var(--warn)}.lt-bad{background:var(--bad);color:#fff}
+.banner.okb{background:var(--ok-bg);border-left:5px solid var(--ok)}
+.pick{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:16px;border-width:2px}
+.pick b{font-size:17px}.pick span{font-weight:400;color:var(--muted);font-size:14px}
+.pick:hover,.pick:focus-visible{border-color:var(--accent)}
+[hidden]{display:none!important}
+@media (max-width:380px){.f{grid-template-columns:minmax(0,1fr) 110px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="brand">KAIMEA<small id="t-sub">Collector</small></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lg-id" aria-pressed="true">ID</button><button type="button" id="lg-en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+  <div class="sync" id="sync" aria-live="polite"><span class="dot" id="dot"></span><span id="synctxt">…</span></div>
+  <nav role="tablist">
+    <button role="tab" id="tab-form" aria-selected="true"></button>
+    <button role="tab" id="tab-list" aria-selected="false"></button>
+    <button role="tab" id="tab-set" aria-selected="false"></button>
+  </nav>
+</header>
+<main id="view"></main>
+<div class="bar" id="bar">
+  <div class="in"><button type="button" id="btn-clear"></button><button type="button" class="primary" id="btn-save"></button></div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<noscript><p style="padding:16px">JavaScript is required / JavaScript diperlukan.</p></noscript>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
