@@ -1,7 +1,7 @@
 /* KAIMEA Collector service worker: keeps the app usable with no signal.
  * Bump CACHE when you publish a new version so phones pick it up.
  */
-var CACHE = "kaimea-collector-v1.2.0";
+var CACHE = "kaimea-collector-v1.3.0";
 var SHELL = ["./", "index.html", "app.js", "config.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png"];
 
 self.addEventListener("install", function (e) {

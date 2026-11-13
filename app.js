@@ -46,6 +46,10 @@
       farmerName: "Nama Anda", phone: "No. HP / WhatsApp", optional: "opsional",
       fIdent: "Data kolam", fPond: "Kondisi udang hari ini", fWq: "Pengukuran air", fExtra: "Tambahan (jika diukur)",
       abwHint: "Berat rata-rata (ABW): timbang sampel udang dari anco atau jala (misalnya 50–100 ekor), lalu bagi total berat dengan jumlah ekor. Isi seminggu sekali, mulai sekitar DOC 30, agar KAIMEA bisa memperkirakan berat panen kolam Anda.",
+      noTeamKey: "Kunci tim belum diisi (Pengaturan)", connFarmerMissing: "Aplikasi belum terhubung ke KAIMEA. Data aman di HP — hubungi tim KAIMEA.",
+      fromConfig: "sudah diatur (biarkan kosong)", keySaved: "•••••••• tersimpan di HP ini", keyEnter: "ketik kunci tim dari koordinator",
+      keyNote: "Kunci tim tidak pernah ditampilkan lagi setelah disimpan. Kosongkan kolom untuk tetap memakai kunci yang tersimpan.",
+      switchTeamQ: "Mode tim lapangan hanya untuk petugas KAIMEA dan memerlukan kunci tim. Lanjut ganti mode?",
       consentTitle: "Persetujuan berbagi data", consentBody: "Data yang Anda isi (kondisi kolam, kualitas air, lokasi jika diambil, nama dan no. HP) dikirim ke tim KAIMEA untuk analisis kesehatan tambak dan pengembangan layanan. Nama dan no. HP tidak dibagikan ke pihak lain tanpa izin Anda. Anda bisa berhenti kapan saja dengan berhenti mengisi dan meminta tim KAIMEA menghapus data Anda.",
       consentAgree: "Saya setuju data saya dikirim ke KAIMEA", consentGo: "Lanjut", consentNeed: "Centang persetujuan dulu.",
       lOk: "baik", lWarn: "waspada", lBad: "bahaya",
@@ -83,6 +87,10 @@
       farmerName: "Your name", phone: "Phone / WhatsApp", optional: "optional",
       fIdent: "Pond details", fPond: "Shrimp today", fWq: "Water readings", fExtra: "Extra (if measured)",
       abwHint: "Average body weight (ABW): weigh a sample of shrimp from the feeding tray or cast net (for example 50–100 shrimp), then divide the total weight by the number of shrimp. Enter it once a week from about DOC 30 so KAIMEA can forecast your pond's harvest weight.",
+      noTeamKey: "Team key not set (Settings)", connFarmerMissing: "The app is not connected to KAIMEA yet. Your data is safe on the phone — contact the KAIMEA team.",
+      fromConfig: "already set (leave blank)", keySaved: "•••••••• saved on this phone", keyEnter: "type the team key from your coordinator",
+      keyNote: "The team key is never shown again once saved. Leave the field blank to keep the saved key.",
+      switchTeamQ: "Field-team mode is for KAIMEA staff only and needs the team key. Switch mode anyway?",
       consentTitle: "Data sharing consent", consentBody: "The data you enter (pond condition, water quality, location if taken, name and phone number) is sent to the KAIMEA team for pond health analysis and service development. Your name and phone number are not shared with others without your permission. You can stop at any time by no longer entering data and asking the KAIMEA team to delete your data.",
       consentAgree: "I agree to send my data to KAIMEA", consentGo: "Continue", consentNeed: "Tick the consent box first.",
       lOk: "good", lWarn: "caution", lBad: "danger",
@@ -251,10 +259,14 @@
   function fmtTime(iso) { try { var d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString(lang === "id" ? "id-ID" : "en-GB", { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return iso; } }
   var toastT;
   function toast(msg, ms) { var el = $("toast"); el.textContent = msg; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { el.hidden = true; }, ms || 3200); }
+  /* Keys: config.js carries only FARMER_KEY (it is public by nature: anyone with the link can read it).
+   * The receiver accepts it for farmer rows only. The TEAM_KEY is never published: each field-team
+   * member types it once on their own phone; it is stored there and never displayed again. */
   function settings() {
     var s = LS.get("kc.settings", {});
-    return { endpoint: (s.endpoint || CFG.SHEET_ENDPOINT || "").trim(), key: (s.key || CFG.TEAM_KEY || "").trim() };
+    return { endpoint: (s.endpoint || CFG.SHEET_ENDPOINT || "").trim(), teamKey: (s.key || "").trim(), farmerKey: (CFG.FARMER_KEY || "").trim() };
   }
+  function keyFor(r) { var s = settings(); return r === "team" ? s.teamKey : (s.teamKey || s.farmerKey); }
   function deviceInfo() {
     var ua = navigator.userAgent || "", m = ua.match(/Android [\d.]+;?\s?([^;)]*)/);
     return (m ? "Android " + (ua.match(/Android ([\d.]+)/) || [])[1] + " " + m[1] : ua.slice(0, 60)).trim();
@@ -312,7 +324,8 @@
   function renderSync() {
     var pend = records.filter(function (r) { return r._status !== "synced"; }).length;
     var on = navigator.onLine, s = settings(), txt, cls = "dot";
-    if (!s.endpoint) { txt = t("noEndpoint"); cls += " err"; }
+    if (!s.endpoint) { txt = t(isFarmer() ? "connFarmerMissing" : "noEndpoint"); cls += " err"; }
+    else if (!keyFor(role || "team")) { txt = t(isFarmer() ? "connFarmerMissing" : "noTeamKey"); cls += " err"; }
     else if (syncState === "syncing") { txt = t("syncing"); cls += " on"; }
     else if (!on) { txt = t("offline"); }
     else if (syncState === "error") { txt = t("syncErr"); cls += " err"; }
@@ -564,22 +577,33 @@
   var installEvt = null, persisted = null;
   function renderSettings() {
     var s = LS.get("kc.settings", {}), eff = settings();
-    var hideConn = isFarmer() && CFG.SHEET_ENDPOINT && CFG.TEAM_KEY;
     var h = "<fieldset><legend>" + esc(t("role")) + '</legend><div class="row"><b>' + esc(isFarmer() ? t("roleFarmer") : t("roleTeam")) +
       '</b><button type="button" id="s-role">' + esc(t("switchRole")) + "</button></div></fieldset>";
-    if (!hideConn) h += "<fieldset><legend>" + esc(t("setTitle")) + "</legend>" +
-      '<div class="f wide"><label for="s-ep">' + esc(t("endpoint")) + '</label><input id="s-ep" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec" value="' +
-      esc(s.endpoint || CFG.SHEET_ENDPOINT || "") + '"></div><div class="f wide"><label for="s-key">' + esc(t("key")) + '</label><input id="s-key" type="text" value="' +
-      esc(s.key || CFG.TEAM_KEY || "") + '"></div><div class="row" style="padding-top:8px"><button type="button" class="primary" id="s-save">' + esc(t("saveSet")) +
-      '</button><button type="button" id="s-test"' + (eff.endpoint ? "" : " disabled") + ">" + esc(t("test")) + "</button></div></fieldset>";
+    if (isFarmer()) {
+      // Farmers never see connection details. If the app was published without them, say who to contact.
+      if (!eff.endpoint || !eff.farmerKey) h += '<div class="banner warn">' + esc(t("connFarmerMissing")) + "</div>";
+    } else {
+      // Team: saved values are never shown. The address field shows only a phone-level override, the key field stays blank.
+      h += "<fieldset><legend>" + esc(t("setTitle")) + "</legend>" +
+        '<div class="f wide"><label for="s-ep">' + esc(t("endpoint")) + '</label><input id="s-ep" type="url" inputmode="url" autocomplete="off" placeholder="' +
+        esc(CFG.SHEET_ENDPOINT ? t("fromConfig") : "https://script.google.com/macros/s/…/exec") + '" value="' + esc(s.endpoint || "") + '"></div>' +
+        '<div class="f wide"><label for="s-key">' + esc(t("key")) + '</label><input id="s-key" type="password" autocomplete="off" placeholder="' +
+        esc(eff.teamKey ? t("keySaved") : t("keyEnter")) + '" value=""></div><p class="note">' + esc(t("keyNote")) + "</p>" +
+        '<div class="row" style="padding-top:8px"><button type="button" class="primary" id="s-save">' + esc(t("saveSet")) +
+        '</button><button type="button" id="s-test"' + (eff.endpoint && eff.teamKey ? "" : " disabled") + ">" + esc(t("test")) + "</button></div></fieldset>";
+    }
     h += "<fieldset><legend>" + esc(t("install")) + "</legend>" + (installEvt ? '<button type="button" class="primary" id="s-inst">' + esc(t("install")) + "</button>" :
       '<p class="note">' + esc(t("installHint")) + "</p>") + "</fieldset>";
     h += "<fieldset><legend>" + esc(t("storage")) + '</legend><p class="note">' + esc(persisted ? t("persisted") : t("notPersisted")) + '</p><p class="note">' +
       esc(t("version")) + " " + esc(APP_VERSION) + " · " + esc(deviceInfo()) + "</p></fieldset>";
     $("view").innerHTML = h;
-    $("s-role").onclick = function () { role = null; LS.set("kc.role", null); tab = "form"; render(); };
+    $("s-role").onclick = function () {
+      if (isFarmer() && !confirm(t("switchTeamQ"))) return;
+      role = null; LS.set("kc.role", null); tab = "form"; render();
+    };
     if ($("s-save")) $("s-save").onclick = function () {
-      LS.set("kc.settings", { endpoint: $("s-ep").value.trim(), key: $("s-key").value.trim() });
+      var k = $("s-key").value.trim();   // blank keeps the key already saved on this phone
+      LS.set("kc.settings", { endpoint: $("s-ep").value.trim(), key: k || s.key || "" });
       toast(t("setSaved")); render(); sync();
     };
     var st = $("s-test"); if (st) st.onclick = testConn;
@@ -595,7 +619,7 @@
         function (e) { if (timer) clearTimeout(timer); throw e.name === "AbortError" ? new Error("timeout") : e; });
   }
   function testConn() {
-    post({ key: settings().key, action: "ping" }, 20000).then(function () { toast(t("testOk")); }, function (e) { toast(t("testBad") + e.message, 6000); });
+    post({ key: keyFor(role || "team"), action: "ping" }, 20000).then(function () { toast(t("testOk")); }, function (e) { toast(t("testBad") + e.message, 6000); });
   }
 
   /* ---------- sync ---------- */
@@ -604,15 +628,21 @@
     var s = settings();
     if (syncState === "syncing" || !s.endpoint) { renderSync(); return Promise.resolve(); }
     if (!manual && (!navigator.onLine || Date.now() < nextTry)) { renderSync(); return Promise.resolve(); }
-    var pend = records.filter(function (r) { return r._status !== "synced"; });
+    // Only rows this phone holds a key for are sent; each role's rows go with that role's key.
+    var pend = records.filter(function (r) { return r._status !== "synced" && keyFor(r.role || "team"); });
     if (!pend.length) { syncState = "idle"; renderSync(); return Promise.resolve(); }
     syncState = "syncing"; render();
-    var chunks = []; for (var i = 0; i < pend.length; i += 20) chunks.push(pend.slice(i, i + 20));
+    var chunks = [];
+    ["farmer", "team"].forEach(function (rl) {
+      var part = pend.filter(function (r) { return (r.role || "team") === rl; });
+      for (var i = 0; i < part.length; i += 20) chunks.push({ key: keyFor(rl), rows: part.slice(i, i + 20) });
+    });
     var sent = 0;
-    return chunks.reduce(function (p, chunk) {
+    return chunks.reduce(function (p, ch) {
+      var chunk = ch.rows;
       return p.then(function () {
         var payload = chunk.map(function (r) { var o = {}; COLUMNS.forEach(function (c) { o[c] = r[c] == null ? "" : r[c]; }); return o; });
-        return post({ key: s.key, action: "append", columns: COLUMNS, records: payload }).then(function (j) {
+        return post({ key: ch.key, action: "append", columns: COLUMNS, records: payload }).then(function (j) {
           var ok = {}; (j.accepted || []).forEach(function (id) { ok[id] = 1; });
           var at = new Date().toISOString();
           return Promise.all(chunk.filter(function (r) { return ok[r.record_id]; }).map(function (r) {
