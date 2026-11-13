@@ -371,9 +371,13 @@
   }
   /* First use: invite the farmer to install. Browsers only allow installing after a tap,
    * so Android Chrome gets a button; other browsers (and iPhone Safari) get short instructions.
-   * "Later" hides the card for 3 days. */
+   * "Later" hides the card for 3 days. Once installed (opened from the home-screen icon, or installed
+   * earlier on this phone, which is remembered) the card never shows again, even in the browser. */
   function isInstalled() {
-    try { return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; } catch (e) { return false; }
+    var standalone = false;
+    try { standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; } catch (e) {}
+    if (standalone) LS.set("kc.installed", true);
+    return standalone || LS.get("kc.installed", false) === true;
   }
   function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent || ""); }
   function installCard() {
@@ -387,7 +391,11 @@
   function doInstall() {
     if (!installEvt) return;
     installEvt.prompt();
-    installEvt.userChoice.then(function () { installEvt = null; render(); });
+    installEvt.userChoice.then(function (c) {
+      installEvt = null;
+      if (c && c.outcome === "accepted") LS.set("kc.installed", true);
+      render();
+    });
   }
   function signsBlock() {
     return "<fieldset><legend>" + esc(t("gSigns")) + '</legend><div class="chips">' + SIGNS.map(function (s) {
@@ -564,7 +572,7 @@
     var eff = settings(), h = "";
     // Farmers never see connection details. If the app was published without them, say who to contact.
     if (!eff.endpoint || !eff.farmerKey) h += '<div class="banner warn">' + esc(t("connFarmerMissing")) + "</div>";
-    h += "<fieldset><legend>" + esc(t("install")) + "</legend>" + (installEvt ? '<button type="button" class="primary" id="s-inst">' + esc(t("install")) + "</button>" :
+    if (!isInstalled()) h += "<fieldset><legend>" + esc(t("install")) + "</legend>" + (installEvt ? '<button type="button" class="primary" id="s-inst">' + esc(t("install")) + "</button>" :
       '<p class="note">' + esc(t("installHint")) + "</p>") + "</fieldset>";
     h += "<fieldset><legend>" + esc(t("storage")) + '</legend><p class="note">' + esc(persisted ? t("persisted") : t("notPersisted")) + '</p><p class="note">' +
       esc(t("version")) + " " + esc(APP_VERSION) + " · " + esc(deviceInfo()) + "</p></fieldset>";
@@ -635,10 +643,11 @@
   setInterval(function () { sync(); }, 60000);
   window.addEventListener("beforeinstallprompt", function (e) {
     e.preventDefault(); installEvt = e;
+    LS.set("kc.installed", false);   // Chrome only offers this when the app is NOT installed (e.g. it was removed)
     var typing = document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName);
     if (!typing) render();   // show the Install button as soon as Chrome allows it
   });
-  window.addEventListener("appinstalled", function () { installEvt = null; toast(t("instDone")); render(); });
+  window.addEventListener("appinstalled", function () { installEvt = null; LS.set("kc.installed", true); toast(t("instDone")); render(); });
 
   if (navigator.storage && navigator.storage.persist) {
     navigator.storage.persisted().then(function (p) { return p || navigator.storage.persist(); }).then(function (p) { persisted = p; }).catch(function () {});

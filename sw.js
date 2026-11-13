@@ -1,4 +1,4 @@
-var CACHE = "kaimea-collector-v1.7.0";
+var CACHE = "kaimea-collector-v1.7.1";
 var SHELL = ["./", "index.html", "app.js", "config.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "icons/wordmark.png", "icons/favicon-64.png"];
 
 self.addEventListener("install", function (e) {
