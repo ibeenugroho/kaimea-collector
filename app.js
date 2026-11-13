@@ -21,7 +21,7 @@
       save: "Simpan", clear: "Kosongkan", saved: "Tersimpan di HP. Akan dikirim saat ada sinyal.",
       savedSync: "Tersimpan dan dikirim.", needReq: "Lengkapi kolom wajib yang berwarna merah.",
       online: "Online", offline: "Offline — data aman di HP", pending: "menunggu kirim", allSent: "semua terkirim",
-      syncing: "Mengirim…", syncErr: "Gagal kirim, akan dicoba lagi", noEndpoint: "Alamat Google Sheet belum diisi (Pengaturan)",
+      syncing: "Mengirim…", syncErr: "Gagal kirim, akan dicoba lagi",
       syncNow: "Kirim sekarang", lastSync: "Terakhir terkirim",
       gIdent: "Identitas sampel", gPond: "Kondisi kolam & udang", gWq: "Kualitas air", gWq2: "Opsional / lab", gSigns: "Gejala terlihat", gSamples: "Sampel untuk lab", gNotes: "Catatan",
       collector: "Nama petugas", farm: "Nama tambak", pond: "Kode kolam", sampled: "Waktu sampling",
@@ -32,24 +32,17 @@
       emptyList: "Belum ada data. Isi formulir di tab Input baru.",
       sPending: "Menunggu", sSynced: "Terkirim", del: "Hapus", delQ: "Hapus data yang belum terkirim ini?", edit: "Ubah",
       export: "Unduh cadangan CSV", exported: "File CSV diunduh.",
-      setTitle: "Pengaturan", endpoint: "Alamat Web App Google Sheet", key: "Kunci tim", saveSet: "Simpan pengaturan", setSaved: "Pengaturan disimpan.",
-      test: "Uji koneksi", testOk: "Koneksi ke Google Sheet berhasil.", testBad: "Koneksi gagal: ",
+      setTitle: "Pengaturan",
       storage: "Penyimpanan HP", persisted: "Data dikunci agar tidak dihapus otomatis oleh browser.", notPersisted: "Browser bisa menghapus data jika memori HP penuh. Kirim data secara rutin.",
       install: "Pasang di layar utama", installHint: "Untuk memasang: buka menu browser (⋮) lalu pilih \"Tambahkan ke layar utama\" / \"Install app\".",
       updated: "Aplikasi diperbarui ke versi terbaru.", version: "Versi",
       warnRange: "Nilai di luar kisaran wajar — periksa lagi", editing: "Mengubah data yang belum terkirim",
       cancelEdit: "Batal ubah", confirmClear: "Kosongkan formulir ini?", draft: "Draf dipulihkan.",
       dupTitle: "Pakai lagi identitas terakhir", noData: "Isi minimal satu nilai pengukuran.",
-      pickTitle: "Siapa yang memakai aplikasi ini?", pickFarmer: "Saya petambak", pickFarmerSub: "Catat kondisi kolam harian dan lihat tanda bahaya.",
-      pickTeam: "Saya tim lapangan KAIMEA", pickTeamSub: "Formulir lengkap: sampel lab, Vibrio, ORP, kode sampel.",
-      role: "Mode", roleFarmer: "Petambak", roleTeam: "Tim lapangan", switchRole: "Ganti mode",
       farmerName: "Nama Anda", phone: "No. HP / WhatsApp", optional: "opsional",
       fIdent: "Data kolam", fPond: "Kondisi udang hari ini", fWq: "Pengukuran air", fExtra: "Tambahan (jika diukur)",
       abwHint: "Berat rata-rata (ABW): timbang sampel udang dari anco atau jala (misalnya 50–100 ekor), lalu bagi total berat dengan jumlah ekor. Isi seminggu sekali, mulai sekitar DOC 30, agar KAIMEA bisa memperkirakan berat panen kolam Anda.",
-      noTeamKey: "Kunci tim belum diisi (Pengaturan)", connFarmerMissing: "Aplikasi belum terhubung ke KAIMEA. Data aman di HP — hubungi tim KAIMEA.",
-      fromConfig: "sudah diatur (biarkan kosong)", keySaved: "•••••••• tersimpan di HP ini", keyEnter: "ketik kunci tim dari koordinator",
-      keyNote: "Kunci tim tidak pernah ditampilkan lagi setelah disimpan. Kosongkan kolom untuk tetap memakai kunci yang tersimpan.",
-      switchTeamQ: "Mode tim lapangan hanya untuk petugas KAIMEA dan memerlukan kunci tim. Lanjut ganti mode?",
+      connFarmerMissing: "Aplikasi belum terhubung ke KAIMEA. Data aman di HP — hubungi tim KAIMEA.",
       consentTitle: "Persetujuan berbagi data", consentBody: "Data yang Anda isi (kondisi kolam, kualitas air, lokasi jika diambil, nama dan no. HP) dikirim ke tim KAIMEA untuk analisis kesehatan tambak dan pengembangan layanan. Nama dan no. HP tidak dibagikan ke pihak lain tanpa izin Anda. Anda bisa berhenti kapan saja dengan berhenti mengisi dan meminta tim KAIMEA menghapus data Anda.",
       consentAgree: "Saya setuju data saya dikirim ke KAIMEA", consentGo: "Lanjut", consentNeed: "Centang persetujuan dulu.",
       lOk: "baik", lWarn: "waspada", lBad: "bahaya",
@@ -62,7 +55,7 @@
       save: "Save", clear: "Clear", saved: "Saved on the phone. It will be sent when there is signal.",
       savedSync: "Saved and sent.", needReq: "Fill in the required fields marked red.",
       online: "Online", offline: "Offline — data is safe on the phone", pending: "waiting to send", allSent: "all sent",
-      syncing: "Sending…", syncErr: "Send failed, will retry", noEndpoint: "Google Sheet address not set (Settings)",
+      syncing: "Sending…", syncErr: "Send failed, will retry",
       syncNow: "Send now", lastSync: "Last sent",
       gIdent: "Sample identity", gPond: "Pond & shrimp status", gWq: "Water quality", gWq2: "Optional / lab", gSigns: "Visible signs", gSamples: "Samples for the lab", gNotes: "Notes",
       collector: "Collector name", farm: "Farm name", pond: "Pond code", sampled: "Sampling time",
@@ -73,24 +66,17 @@
       emptyList: "No records yet. Fill in the form on the New entry tab.",
       sPending: "Waiting", sSynced: "Sent", del: "Delete", delQ: "Delete this unsent record?", edit: "Edit",
       export: "Download CSV backup", exported: "CSV file downloaded.",
-      setTitle: "Settings", endpoint: "Google Sheet Web App URL", key: "Team key", saveSet: "Save settings", setSaved: "Settings saved.",
-      test: "Test connection", testOk: "Connected to the Google Sheet.", testBad: "Connection failed: ",
+      setTitle: "Settings",
       storage: "Phone storage", persisted: "Data is protected from automatic browser clean-up.", notPersisted: "The browser may clear data if the phone runs out of space. Send data regularly.",
       install: "Install on home screen", installHint: "To install: open the browser menu (⋮) and choose \"Add to Home screen\" / \"Install app\".",
       updated: "App updated to the latest version.", version: "Version",
       warnRange: "Value outside the usual range — please check", editing: "Editing an unsent record",
       cancelEdit: "Cancel edit", confirmClear: "Clear this form?", draft: "Draft restored.",
       dupTitle: "Reuse last identity", noData: "Enter at least one measurement.",
-      pickTitle: "Who is using this app?", pickFarmer: "I am a farmer", pickFarmerSub: "Log daily pond conditions and see warning signs.",
-      pickTeam: "I am KAIMEA field team", pickTeamSub: "Full form: lab samples, Vibrio, ORP, sample codes.",
-      role: "Mode", roleFarmer: "Farmer", roleTeam: "Field team", switchRole: "Switch mode",
       farmerName: "Your name", phone: "Phone / WhatsApp", optional: "optional",
       fIdent: "Pond details", fPond: "Shrimp today", fWq: "Water readings", fExtra: "Extra (if measured)",
       abwHint: "Average body weight (ABW): weigh a sample of shrimp from the feeding tray or cast net (for example 50–100 shrimp), then divide the total weight by the number of shrimp. Enter it once a week from about DOC 30 so KAIMEA can forecast your pond's harvest weight.",
-      noTeamKey: "Team key not set (Settings)", connFarmerMissing: "The app is not connected to KAIMEA yet. Your data is safe on the phone — contact the KAIMEA team.",
-      fromConfig: "already set (leave blank)", keySaved: "•••••••• saved on this phone", keyEnter: "type the team key from your coordinator",
-      keyNote: "The team key is never shown again once saved. Leave the field blank to keep the saved key.",
-      switchTeamQ: "Field-team mode is for KAIMEA staff only and needs the team key. Switch mode anyway?",
+      connFarmerMissing: "The app is not connected to KAIMEA yet. Your data is safe on the phone — contact the KAIMEA team.",
       consentTitle: "Data sharing consent", consentBody: "The data you enter (pond condition, water quality, location if taken, name and phone number) is sent to the KAIMEA team for pond health analysis and service development. Your name and phone number are not shared with others without your permission. You can stop at any time by no longer entering data and asking the KAIMEA team to delete your data.",
       consentAgree: "I agree to send my data to KAIMEA", consentGo: "Continue", consentNeed: "Tick the consent box first.",
       lOk: "good", lWarn: "caution", lBad: "danger",
@@ -259,14 +245,11 @@
   function fmtTime(iso) { try { var d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString(lang === "id" ? "id-ID" : "en-GB", { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return iso; } }
   var toastT;
   function toast(msg, ms) { var el = $("toast"); el.textContent = msg; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { el.hidden = true; }, ms || 3200); }
-  /* Keys: config.js carries only FARMER_KEY (it is public by nature: anyone with the link can read it).
-   * The receiver accepts it for farmer rows only. The TEAM_KEY is never published: each field-team
-   * member types it once on their own phone; it is stored there and never displayed again. */
+  /* Farmer-only app. The connection comes from config.js only (farmers never see or change it).
+   * FARMER_KEY is public by nature; the receiver accepts it for farmer rows only. */
   function settings() {
-    var s = LS.get("kc.settings", {});
-    return { endpoint: (s.endpoint || CFG.SHEET_ENDPOINT || "").trim(), teamKey: (s.key || "").trim(), farmerKey: (CFG.FARMER_KEY || "").trim() };
+    return { endpoint: (CFG.SHEET_ENDPOINT || "").trim(), farmerKey: (CFG.FARMER_KEY || "").trim() };
   }
-  function keyFor(r) { var s = settings(); return r === "team" ? s.teamKey : (s.teamKey || s.farmerKey); }
   function deviceInfo() {
     var ua = navigator.userAgent || "", m = ua.match(/Android [\d.]+;?\s?([^;)]*)/);
     return (m ? "Android " + (ua.match(/Android ([\d.]+)/) || [])[1] + " " + m[1] : ua.slice(0, 60)).trim();
@@ -274,12 +257,10 @@
 
   /* ---------- state ---------- */
   var tab = "form", editingId = null, records = [], syncState = "idle", lastErr = "";
-  // Role comes from the link (…/?mode=petambak or ?mode=tim) or the first-run choice.
-  var qm = (location.search.match(/[?&]mode=([a-z]+)/i) || [])[1];
-  if (qm) { qm = /^(petambak|farmer)$/i.test(qm) ? "farmer" : /^(tim|team)$/i.test(qm) ? "team" : null; if (qm) LS.set("kc.role", qm); }
-  var role = LS.get("kc.role", null);
-  function isFarmer() { return role === "farmer"; }
-  function needsConsent() { return isFarmer() && !LS.get("kc.consent", null); }
+  // Farmer-only build. The field-team app will be a separate app later.
+  var role = "farmer";
+  try { localStorage.removeItem("kc.role"); localStorage.removeItem("kc.settings"); } catch (e) {}
+  function needsConsent() { return !LS.get("kc.consent", null); }
   var form = LS.get("kc.draft", null) || blankForm();
   function blankForm(keepIdent) {
     var f = { sampled_at: localDT(new Date()), signs: [] };
@@ -310,22 +291,19 @@
     $("tab-list").textContent = t("tabList") + (pend ? " (" + pend + ")" : "");
     $("tab-set").textContent = t("tabSet");
     ["form", "list", "set"].forEach(function (k) { $("tab-" + k).setAttribute("aria-selected", tab === k); });
-    var gate = !role || (tab === "form" && needsConsent());
-    document.querySelector("nav").hidden = !role;
+    var gate = tab === "form" && needsConsent();
     $("bar").hidden = tab !== "form" || gate;
     $("btn-save").textContent = t("save");
     $("btn-clear").textContent = editingId ? t("cancelEdit") : t("clear");
     renderSync();
-    if (!role) renderPicker();
-    else if (tab === "form" && needsConsent()) renderConsent();
+    if (tab === "form" && needsConsent()) renderConsent();
     else if (tab === "form") renderForm(); else if (tab === "list") renderList(); else renderSettings();
   }
 
   function renderSync() {
     var pend = records.filter(function (r) { return r._status !== "synced"; }).length;
     var on = navigator.onLine, s = settings(), txt, cls = "dot";
-    if (!s.endpoint) { txt = t(isFarmer() ? "connFarmerMissing" : "noEndpoint"); cls += " err"; }
-    else if (!keyFor(role || "team")) { txt = t(isFarmer() ? "connFarmerMissing" : "noTeamKey"); cls += " err"; }
+    if (!s.endpoint || !s.farmerKey) { txt = t("connFarmerMissing"); cls += " err"; }
     else if (syncState === "syncing") { txt = t("syncing"); cls += " on"; }
     else if (!on) { txt = t("offline"); }
     else if (syncState === "error") { txt = t("syncErr"); cls += " err"; }
@@ -362,32 +340,23 @@
   }
 
   function renderForm() {
-    var d = derive(form), h = "", far = isFarmer();
+    var d = derive(form), h = "";
     if (editingId) h += '<div class="banner warn">' + esc(t("editing")) + "</div>";
-    if (far && !editingId) h += checkSummary();
+    if (!editingId) h += checkSummary();
     h += datalists() + '<form id="frm" autocomplete="off" novalidate>';
-    h += "<fieldset><legend>" + esc(far ? t("fIdent") : t("gIdent")) + "</legend>" +
-      textField("collector", far ? t("farmerName") : t("collector"), true) +
-      (far ? textField("phone", t("phone") + " (" + t("optional") + ")", false, "tel") : "") +
+    h += "<fieldset><legend>" + esc(t("fIdent")) + "</legend>" +
+      textField("collector", t("farmerName"), true) +
+      textField("phone", t("phone") + " (" + t("optional") + ")", false, "tel") +
       textField("farm", t("farm"), true) + textField("pond_id", t("pond"), true) +
       textField("sampled_at", t("sampled"), true, "datetime-local") +
       '<div class="f wide"><div class="row"><button type="button" id="btn-gps">' + esc(t("gps")) + '</button><span class="gps" id="gpsout">' +
       (form.lat != null ? esc(form.lat + ", " + form.lng + " (" + t("gpsAcc") + " ±" + form.gps_acc_m + " m)") : "") + "</span></div></div></fieldset>";
-    if (far) {
-      h += "<fieldset><legend>" + esc(t("fWq")) + "</legend>" + F_WQ.map(numField).join("") +
-        '<div class="derived" id="derived">' + derivedTxt(d) + '</div><p class="note">' + esc(t("lightsNote")) + "</p></fieldset>";
-      h += "<fieldset><legend>" + esc(t("fPond")) + "</legend>" + F_POND.map(numField).join("") +
-        '<p class="note">' + esc(t("abwHint")) + "</p></fieldset>";
-      h += signsBlock();
-      h += "<fieldset><legend>" + esc(t("fExtra")) + "</legend>" + F_EXTRA.map(numField).join("") + "</fieldset>";
-    } else {
-      h += "<fieldset><legend>" + esc(t("gPond")) + "</legend>" + POND.map(numField).join("") + "</fieldset>";
-      h += "<fieldset><legend>" + esc(t("gWq")) + "</legend>" + WQ.map(numField).join("") +
-        '<div class="derived" id="derived">' + derivedTxt(d) + "</div></fieldset>";
-      h += "<fieldset><legend>" + esc(t("gWq2")) + "</legend>" + WQ2.map(numField).join("") + "</fieldset>";
-      h += signsBlock();
-      h += "<fieldset><legend>" + esc(t("gSamples")) + "</legend>" + SAMPLES.map(function (s) { return textField(s[0], lang === "id" ? s[1] : s[2], false); }).join("") + "</fieldset>";
-    }
+    h += "<fieldset><legend>" + esc(t("fWq")) + "</legend>" + F_WQ.map(numField).join("") +
+      '<div class="derived" id="derived">' + derivedTxt(d) + '</div><p class="note">' + esc(t("lightsNote")) + "</p></fieldset>";
+    h += "<fieldset><legend>" + esc(t("fPond")) + "</legend>" + F_POND.map(numField).join("") +
+      '<p class="note">' + esc(t("abwHint")) + "</p></fieldset>";
+    h += signsBlock();
+    h += "<fieldset><legend>" + esc(t("fExtra")) + "</legend>" + F_EXTRA.map(numField).join("") + "</fieldset>";
     h += "<fieldset><legend>" + esc(t("gNotes")) + '</legend><div class="f wide"><label for="i-notes">' + esc(t("notes")) +
       '</label><textarea id="i-notes" name="notes">' + esc(form.notes || "") + "</textarea></div></fieldset>";
     h += "</form>";
@@ -424,14 +393,6 @@
     else h += bad.map(function (x) { return esc(labelOf(x[0])) + " " + esc(x[2]) + lightPill(x[1]); }).join("<br>");
     if (worst) h += '<div class="note">' + esc(t("checkAdvice")) + "</div>";
     return h + "</div>";
-  }
-  function renderPicker() {
-    $("view").innerHTML = '<h2 style="margin:6px 0 14px;font-size:20px">' + esc(t("pickTitle")) + '</h2><div class="list">' +
-      '<button type="button" class="pick" data-role="farmer"><b>' + esc(t("pickFarmer")) + "</b><span>" + esc(t("pickFarmerSub")) + "</span></button>" +
-      '<button type="button" class="pick" data-role="team"><b>' + esc(t("pickTeam")) + "</b><span>" + esc(t("pickTeamSub")) + "</span></button></div>";
-    Array.prototype.forEach.call(document.querySelectorAll(".pick"), function (b) {
-      b.onclick = function () { role = b.getAttribute("data-role"); LS.set("kc.role", role); tab = "form"; render(); };
-    });
   }
   function renderConsent() {
     $("view").innerHTML = "<fieldset><legend>" + esc(t("consentTitle")) + '</legend><p style="margin:6px 0 12px">' + esc(t("consentBody")) + "</p>" +
@@ -481,7 +442,7 @@
     if (editingId) records.forEach(function (r) { if (r.record_id === editingId) old = r; });
     var r = {
       record_id: editingId || uuid(), app_version: APP_VERSION, collector: (form.collector || "").trim(), device: deviceInfo(),
-      role: role || "team", phone: isFarmer() ? (form.phone || "").trim() : "", consent_at: isFarmer() ? LS.get("kc.consent", "") : "",
+      role: "farmer", phone: (form.phone || "").trim(), consent_at: LS.get("kc.consent", ""),
       created_at: old ? old.created_at : now, updated_at: now,
       sampled_at: isoWithOffset(form.sampled_at), _sampled_local: form.sampled_at,
       farm: (form.farm || "").trim(), pond_id: (form.pond_id || "").trim().toUpperCase(),
@@ -576,37 +537,14 @@
 
   var installEvt = null, persisted = null;
   function renderSettings() {
-    var s = LS.get("kc.settings", {}), eff = settings();
-    var h = "<fieldset><legend>" + esc(t("role")) + '</legend><div class="row"><b>' + esc(isFarmer() ? t("roleFarmer") : t("roleTeam")) +
-      '</b><button type="button" id="s-role">' + esc(t("switchRole")) + "</button></div></fieldset>";
-    if (isFarmer()) {
-      // Farmers never see connection details. If the app was published without them, say who to contact.
-      if (!eff.endpoint || !eff.farmerKey) h += '<div class="banner warn">' + esc(t("connFarmerMissing")) + "</div>";
-    } else {
-      // Team: saved values are never shown. The address field shows only a phone-level override, the key field stays blank.
-      h += "<fieldset><legend>" + esc(t("setTitle")) + "</legend>" +
-        '<div class="f wide"><label for="s-ep">' + esc(t("endpoint")) + '</label><input id="s-ep" type="url" inputmode="url" autocomplete="off" placeholder="' +
-        esc(CFG.SHEET_ENDPOINT ? t("fromConfig") : "https://script.google.com/macros/s/…/exec") + '" value="' + esc(s.endpoint || "") + '"></div>' +
-        '<div class="f wide"><label for="s-key">' + esc(t("key")) + '</label><input id="s-key" type="password" autocomplete="off" placeholder="' +
-        esc(eff.teamKey ? t("keySaved") : t("keyEnter")) + '" value=""></div><p class="note">' + esc(t("keyNote")) + "</p>" +
-        '<div class="row" style="padding-top:8px"><button type="button" class="primary" id="s-save">' + esc(t("saveSet")) +
-        '</button><button type="button" id="s-test"' + (eff.endpoint && eff.teamKey ? "" : " disabled") + ">" + esc(t("test")) + "</button></div></fieldset>";
-    }
+    var eff = settings(), h = "";
+    // Farmers never see connection details. If the app was published without them, say who to contact.
+    if (!eff.endpoint || !eff.farmerKey) h += '<div class="banner warn">' + esc(t("connFarmerMissing")) + "</div>";
     h += "<fieldset><legend>" + esc(t("install")) + "</legend>" + (installEvt ? '<button type="button" class="primary" id="s-inst">' + esc(t("install")) + "</button>" :
       '<p class="note">' + esc(t("installHint")) + "</p>") + "</fieldset>";
     h += "<fieldset><legend>" + esc(t("storage")) + '</legend><p class="note">' + esc(persisted ? t("persisted") : t("notPersisted")) + '</p><p class="note">' +
       esc(t("version")) + " " + esc(APP_VERSION) + " · " + esc(deviceInfo()) + "</p></fieldset>";
     $("view").innerHTML = h;
-    $("s-role").onclick = function () {
-      if (isFarmer() && !confirm(t("switchTeamQ"))) return;
-      role = null; LS.set("kc.role", null); tab = "form"; render();
-    };
-    if ($("s-save")) $("s-save").onclick = function () {
-      var k = $("s-key").value.trim();   // blank keeps the key already saved on this phone
-      LS.set("kc.settings", { endpoint: $("s-ep").value.trim(), key: k || s.key || "" });
-      toast(t("setSaved")); render(); sync();
-    };
-    var st = $("s-test"); if (st) st.onclick = testConn;
     var si = $("s-inst"); if (si) si.onclick = function () { installEvt.prompt(); installEvt.userChoice.then(function () { installEvt = null; render(); }); };
   }
   function post(body, ms) {
@@ -618,25 +556,18 @@
       .then(function (j) { if (timer) clearTimeout(timer); if (!j.ok) throw new Error(j.error || "rejected"); return j; },
         function (e) { if (timer) clearTimeout(timer); throw e.name === "AbortError" ? new Error("timeout") : e; });
   }
-  function testConn() {
-    post({ key: keyFor(role || "team"), action: "ping" }, 20000).then(function () { toast(t("testOk")); }, function (e) { toast(t("testBad") + e.message, 6000); });
-  }
 
   /* ---------- sync ---------- */
   var backoff = 0, nextTry = 0;
   function sync(manual) {
     var s = settings();
-    if (syncState === "syncing" || !s.endpoint) { renderSync(); return Promise.resolve(); }
+    if (syncState === "syncing" || !s.endpoint || !s.farmerKey) { renderSync(); return Promise.resolve(); }
     if (!manual && (!navigator.onLine || Date.now() < nextTry)) { renderSync(); return Promise.resolve(); }
-    // Only rows this phone holds a key for are sent; each role's rows go with that role's key.
-    var pend = records.filter(function (r) { return r._status !== "synced" && keyFor(r.role || "team"); });
+    var pend = records.filter(function (r) { return r._status !== "synced" && r.role === "farmer"; });
     if (!pend.length) { syncState = "idle"; renderSync(); return Promise.resolve(); }
     syncState = "syncing"; render();
     var chunks = [];
-    ["farmer", "team"].forEach(function (rl) {
-      var part = pend.filter(function (r) { return (r.role || "team") === rl; });
-      for (var i = 0; i < part.length; i += 20) chunks.push({ key: keyFor(rl), rows: part.slice(i, i + 20) });
-    });
+    for (var i = 0; i < pend.length; i += 20) chunks.push({ key: s.farmerKey, rows: pend.slice(i, i + 20) });
     var sent = 0;
     return chunks.reduce(function (p, ch) {
       var chunk = ch.rows;
@@ -684,9 +615,12 @@
     navigator.storage.persisted().then(function (p) { return p || navigator.storage.persist(); }).then(function (p) { persisted = p; }).catch(function () {});
   }
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
-    var hadController = !!navigator.serviceWorker.controller;
-    navigator.serviceWorker.register("sw.js").catch(function (e) { console.warn("SW", e); });
-    navigator.serviceWorker.addEventListener("controllerchange", function () { if (hadController) toast(t("updated")); });
+    var hadController = !!navigator.serviceWorker.controller, reloading = false;
+    navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then(function (reg) { reg.update(); }).catch(function (e) { console.warn("SW", e); });
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (!hadController || reloading) return;
+      reloading = true; saveDraft(); location.reload();   // new version installed: show it now
+    });
   }
   if (LS.get("kc.draft", null)) {
     var has = NUMERIC.some(function (f) { return form[f[0]] !== undefined && form[f[0]] !== ""; });
